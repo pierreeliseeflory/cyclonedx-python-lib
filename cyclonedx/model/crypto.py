@@ -1,10 +1,11 @@
 from enum import Enum
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Any
 
 # See https://github.com/package-url/packageurl-python/issues/65
 import serializable
 from sortedcontainers import SortedSet
 
+from . import ComparableTuple
 from ..exception.model import NoPropertiesProvidedException
 from ..schema.schema import SchemaVersion1Dot4CbomVersion1Dot0
 
@@ -678,6 +679,12 @@ class DetectionContext:
             self.file_path, tuple(self.line_numbers), tuple(self.offsets), tuple(self.symbols), tuple(self.keywords),
             self.additional_context
         ))
+
+    def __lt__(self, other: Any) -> bool:
+        if isinstance(other, DetectionContext):
+            return (ComparableTuple((self.file_path, self.line_numbers)) <
+                    ComparableTuple((other.file_path, other.line_numbers)))
+        return NotImplemented
 
 
 @serializable.serializable_class
