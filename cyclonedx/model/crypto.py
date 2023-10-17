@@ -22,6 +22,29 @@ class AssetType(str, Enum):
     PROTOCOL = 'protocol'
 
 
+class Primitive(str, Enum):
+    """
+    Enum object that defines the permissible 'types' for a crypto asset primitive according to the CBOM schema.
+
+    .. note::
+        See the CycloneDX Schema definition: https://github.com/IBM/CBOM/blob/main/bom-1.4-cbom-1.0.schema.json#L501
+    """
+    AUTHENTICATED_ENCRYPTION = 'ae'
+    BLOCK_CIPHER = 'blockcipher'
+    DETERMINISTIC_RANDOM_BIT_GENERATOR = 'drbg'
+    EXTENDABLE_OUTPUT_FUNCTION = 'xof'
+    HASH = 'hash'
+    KEY_AGREE = 'keyagree'
+    KEY_DERIVATION_FUNCTION = 'kdf'
+    KEY_ENCAPSULATION_MECHANISM = 'kem'
+    MESSAGE_AUTHENTICATION_CODE = 'mac'
+    OTHER = 'other'
+    PUBLIC_KEY_ENCRYPTION = 'pke'
+    STREAM_CIPHER = 'streamcipher'
+    SIGNATURE = 'signature'
+    UNKNOWN = 'unknown'
+
+
 @serializable.serializable_class
 class IKEv2TransformTypes:
     """
@@ -97,7 +120,7 @@ class AlgorithmProperties:
         See the CBOM Schema definition: https://github.com/IBM/CBOM/blob/main/bom-1.4-cbom-1.0.schema.json#L495
     """
 
-    def __init__(self, *, primitive: Optional[str] = None, variant: Optional[str] = None,
+    def __init__(self, *, primitive: Optional[Primitive] = None, variant: Optional[str] = None,
                  implementation_level: Optional[str] = None, implementation_platform: Optional[str] = None,
                  certification_level: Optional[str] = None, mode: Optional[str] = None, padding: Optional[str] = None,
                  crypto_functions: Optional[Iterable[str]] = None) -> None:
@@ -111,6 +134,7 @@ class AlgorithmProperties:
         self.crypto_functions = crypto_functions or []  # type: ignore
 
     @property
+    @serializable.xml_attribute()
     def primitive(self) -> Optional[str]:
         return self._primitive
 
