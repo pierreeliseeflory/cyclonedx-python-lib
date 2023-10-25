@@ -6,7 +6,6 @@ import serializable
 from sortedcontainers import SortedSet
 
 from . import ComparableTuple
-from ..exception.model import NoPropertiesProvidedException
 from ..schema.schema import SchemaVersion1Dot4CbomVersion1Dot0
 
 
@@ -21,29 +20,6 @@ class AssetType(str, Enum):
     CERTIFICATE = 'certificate'
     RELATED_CRYPTO_MATERIAL = 'relatedCryptoMaterial'
     PROTOCOL = 'protocol'
-
-
-class Primitive(str, Enum):
-    """
-    Enum object that defines the permissible 'types' for a crypto asset primitive according to the CBOM schema.
-
-    .. note::
-        See the CycloneDX Schema definition: https://github.com/IBM/CBOM/blob/main/bom-1.4-cbom-1.0.schema.json#L501
-    """
-    AUTHENTICATED_ENCRYPTION = 'ae'
-    BLOCK_CIPHER = 'blockcipher'
-    DETERMINISTIC_RANDOM_BIT_GENERATOR = 'drbg'
-    EXTENDABLE_OUTPUT_FUNCTION = 'xof'
-    HASH = 'hash'
-    KEY_AGREE = 'keyagree'
-    KEY_DERIVATION_FUNCTION = 'kdf'
-    KEY_ENCAPSULATION_MECHANISM = 'kem'
-    MESSAGE_AUTHENTICATION_CODE = 'mac'
-    OTHER = 'other'
-    PUBLIC_KEY_ENCRYPTION = 'pke'
-    STREAM_CIPHER = 'streamcipher'
-    SIGNATURE = 'signature'
-    UNKNOWN = 'unknown'
 
 
 @serializable.serializable_class
@@ -112,6 +88,62 @@ class IKEv2TransformTypes:
         ))
 
 
+class Primitive(str, Enum):
+    """
+    Enum object that defines the permissible 'types' for a crypto asset primitive according to the CBOM schema.
+
+    .. note::
+        See the CycloneDX Schema definition: https://github.com/IBM/CBOM/blob/main/bom-1.4-cbom-1.0.schema.json#L501
+    """
+    AUTHENTICATED_ENCRYPTION = 'ae'
+    BLOCK_CIPHER = 'blockcipher'
+    DETERMINISTIC_RANDOM_BIT_GENERATOR = 'drbg'
+    EXTENDABLE_OUTPUT_FUNCTION = 'xof'
+    HASH = 'hash'
+    KEY_AGREE = 'keyagree'
+    KEY_DERIVATION_FUNCTION = 'kdf'
+    KEY_ENCAPSULATION_MECHANISM = 'kem'
+    MESSAGE_AUTHENTICATION_CODE = 'mac'
+    OTHER = 'other'
+    PUBLIC_KEY_ENCRYPTION = 'pke'
+    STREAM_CIPHER = 'streamcipher'
+    SIGNATURE = 'signature'
+    UNKNOWN = 'unknown'
+
+
+class Mode(str, Enum):
+    """
+    Enum object that defines the permissible 'types' for a crypto asset mode according to the CBOM schema.
+
+    .. note::
+        See the CycloneDX Schema definition: https://github.com/IBM/CBOM/blob/main/bom-1.4-cbom-1.0.schema.json#L586
+    """
+    CBC = 'cbc'
+    CCM = 'ccm'
+    CFB = 'cfb'
+    CTR = 'ctr'
+    ECB = 'ecb'
+    GCM = 'gcm'
+    OFB = 'ofb'
+    OTHER = 'other'
+    UNKNOWN = 'unknown'
+
+
+class Padding(str, Enum):
+    """
+    Enum object that defines the permissible 'types' for a crypto asset padding according to the CBOM schema.
+
+    .. note::
+        See the CycloneDX Schema definition: https://github.com/IBM/CBOM/blob/main/bom-1.4-cbom-1.0.schema.json#L602
+    """
+    OAEP = 'oaep'
+    OTHER = 'other'
+    PKCS1_V15 = 'pkcs1v15'
+    PKCS7 = 'pkcs7'
+    RAW = 'raw'
+    UNKNOWN = 'unknown'
+
+
 @serializable.serializable_class
 class AlgorithmProperties:
     """
@@ -123,8 +155,8 @@ class AlgorithmProperties:
 
     def __init__(self, *, primitive: Optional[Primitive] = None, variant: Optional[str] = None,
                  implementation_level: Optional[str] = None, implementation_platform: Optional[str] = None,
-                 certification_level: Optional[str] = None, mode: Optional[str] = None, padding: Optional[str] = None,
-                 crypto_functions: Optional[Iterable[str]] = None) -> None:
+                 certification_level: Optional[str] = None, mode: Optional[Mode] = None,
+                 padding: Optional[Padding] = None, crypto_functions: Optional[Iterable[str]] = None) -> None:
         self.primitive = primitive
         self.variant = variant
         self.implementation_level = implementation_level
@@ -136,11 +168,11 @@ class AlgorithmProperties:
 
     @property
     @serializable.xml_attribute()
-    def primitive(self) -> Optional[str]:
+    def primitive(self) -> Optional[Primitive]:
         return self._primitive
 
     @primitive.setter
-    def primitive(self, primitive: Optional[str]) -> None:
+    def primitive(self, primitive: Optional[Primitive]) -> None:
         self._primitive = primitive
 
     @property
@@ -176,19 +208,21 @@ class AlgorithmProperties:
         self._certification_level = certification_level
 
     @property
-    def mode(self) -> Optional[str]:
+    @serializable.xml_attribute()
+    def mode(self) -> Optional[Mode]:
         return self._mode
 
     @mode.setter
-    def mode(self, mode: Optional[str]) -> None:
+    def mode(self, mode: Optional[Mode]) -> None:
         self._mode = mode
 
     @property
-    def padding(self) -> Optional[str]:
+    @serializable.xml_attribute()
+    def padding(self) -> Optional[Padding]:
         return self._padding
 
     @padding.setter
-    def padding(self, padding: Optional[str]) -> None:
+    def padding(self, padding: Optional[Padding]) -> None:
         self._padding = padding
 
     @property  # type: ignore[misc]
@@ -311,6 +345,33 @@ class CertificateProperties:
         ))
 
 
+class RelatedCryptoMaterialType(str, Enum):
+    """
+    Enum object that defines the permissible 'types' for a related crypto material asset according to the CBOM schema.
+
+    .. note::
+        See the CycloneDX Schema definition: https://github.com/IBM/CBOM/blob/main/bom-1.4-cbom-1.0.schema.json#L688
+    """
+    ADDITIONAL_DATA = 'additionalData'
+    CIPHER_TEXT = 'ciphertext'
+    CREDENTIAL = 'credential'
+    DIGEST = 'digest'
+    INITIALIZATION_VECTOR = 'initializationVector'
+    NONCE = 'nonce'
+    OTHER = 'other'
+    PASSWORD = 'password'
+    PRIVATE_KEY = 'privateKey'
+    PUBLIC_KEY = 'publicKey'
+    SALT = 'salt'
+    SECRET_KEY = 'secretKey'
+    SEED = 'seed'
+    SHARED_SECRET = 'sharedSecret'
+    SIGNATURE = 'signature'
+    TAG = 'tag'
+    TOKEN = 'token'
+    UNKNOWN = 'unknown'
+
+
 @serializable.serializable_class
 class RelatedCryptoMaterialProperties:
     """
@@ -320,19 +381,20 @@ class RelatedCryptoMaterialProperties:
         See the CBOM Schema definition: https://github.com/IBM/CBOM/blob/main/bom-1.4-cbom-1.0.schema.json#L688
     """
 
-    def __init__(self, *, related_crypto_material_type: Optional[str] = None, size: Optional[int] = None,
-                 format: Optional[str] = None, secured: Optional[bool] = None) -> None:
+    def __init__(self, *, related_crypto_material_type: Optional[RelatedCryptoMaterialType] = None,
+                 size: Optional[int] = None, format: Optional[str] = None, secured: Optional[bool] = None) -> None:
         self.related_crypto_material_type = related_crypto_material_type
         self.size = size
         self.format = format
         self.secured = secured
 
     @property
-    def related_crypto_material_type(self) -> Optional[str]:
+    @serializable.xml_attribute()
+    def related_crypto_material_type(self) -> Optional[RelatedCryptoMaterialType]:
         return self._related_crypto_material_type
 
     @related_crypto_material_type.setter
-    def related_crypto_material_type(self, related_crypto_material_type: Optional[str]) -> None:
+    def related_crypto_material_type(self, related_crypto_material_type: Optional[RelatedCryptoMaterialType]) -> None:
         self._related_crypto_material_type = related_crypto_material_type
 
     @property
