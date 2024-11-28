@@ -41,6 +41,12 @@ class SchemaVersion1Dot4CbomVersion1Dot0(BaseSchemaVersion):
     def schema_version_enum(self) -> SchemaVersion:
         return SchemaVersion.V1_4_CBOM_V1_0
 
+class SchemaVersion1Dot6(BaseSchemaVersion):
+
+    @property
+    def schema_version_enum(self) -> SchemaVersion:
+        return SchemaVersion.V1_6
+
 
 class SchemaVersion1Dot4(BaseSchemaVersion):
 
@@ -84,4 +90,5 @@ SCHEMA_VERSIONS = {
     '1.3': SchemaVersion1Dot3,
     '1.4': SchemaVersion1Dot4,
     '1.4-cbom-1.0': SchemaVersion1Dot4CbomVersion1Dot0
+    '1.6': SchemaVersion1Dot6,
 }

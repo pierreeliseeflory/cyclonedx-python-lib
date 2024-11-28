@@ -29,6 +29,7 @@ class SchemaVersion(str, Enum):
     V1_3: str = 'V1Dot3'
     V1_4: str = 'V1Dot4'
     V1_4_CBOM_V1_0: str = 'V1Dot4CbomV1Dot0'
+    V1_6: str = 'V1Dot6'
 
     def to_version(self) -> str:
         """

@@ -2,8 +2,8 @@ from cyclonedx.factory.license import LicenseChoiceFactory, LicenseFactory
 from cyclonedx.model import OrganizationalEntity, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component, ComponentType
-from cyclonedx.output.json import JsonV1Dot4
-from cyclonedx.output.xml import XmlV1Dot4
+from cyclonedx.output.json import JsonV1Dot6
+from cyclonedx.output.xml import XmlV1Dot6
 from packageurl import PackageURL
 
 lc_factory = LicenseChoiceFactory(license_factory=LicenseFactory())
@@ -44,8 +44,8 @@ bom.register_dependency(component1, [component2])
 
 # endregion build the BOM
 
-serializedJSON = JsonV1Dot4(bom).output_as_string()
+serializedJSON = JsonV1Dot6(bom).output_as_string()
 print(serializedJSON)
 
-serializedXML = XmlV1Dot4(bom).output_as_string()
+serializedXML = XmlV1Dot6(bom).output_as_string()
 print(serializedXML)

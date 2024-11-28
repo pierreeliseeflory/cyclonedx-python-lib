@@ -31,6 +31,7 @@ from ..schema.schema import (
     SchemaVersion1Dot2,
     SchemaVersion1Dot3,
     SchemaVersion1Dot4,
+    SchemaVersion1Dot6,
 )
 from . import BaseOutput
 
@@ -96,4 +97,7 @@ class XmlV1Dot3(Xml, SchemaVersion1Dot3):
 
 
 class XmlV1Dot4(Xml, SchemaVersion1Dot4):
+    pass
+
+class XmlV1Dot6(Xml, SchemaVersion1Dot6):
     pass

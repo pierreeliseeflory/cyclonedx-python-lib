@@ -33,6 +33,7 @@ from ..schema.schema import (
     SchemaVersion1Dot3,
     SchemaVersion1Dot4,
     SchemaVersion1Dot4CbomVersion1Dot0
+    SchemaVersion1Dot6,
 )
 from . import BaseOutput
 
@@ -120,3 +121,8 @@ class JsonV1Dot4CbomV1Dot0(Json, SchemaVersion1Dot4CbomVersion1Dot0):
 
     def _get_schema_uri(self) -> Optional[str]:
         return 'https://raw.githubusercontent.com/IBM/CBOM/main/bom-1.4-cbom-1.0.schema.json'
+
+class JsonV1Dot6(Json, SchemaVersion1Dot6):
+
+    def _get_schema_uri(self) -> Optional[str]:
+        return 'https://cyclonedx.org/schema/bom-1.6.schema.json'
