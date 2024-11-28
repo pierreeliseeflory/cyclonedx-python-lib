@@ -266,7 +266,7 @@ class ComponentType(str, Enum):
     FRAMEWORK = 'framework'
     LIBRARY = 'library'
     OPERATING_SYSTEM = 'operating-system'
-    CRYPTO_ASSET = 'crypto-asset'
+    CRYPTO_ASSET = 'cryptographic-asset' # https://cyclonedx.org/schema/bom-1.6.schema.json
 
 
 class Diff:
