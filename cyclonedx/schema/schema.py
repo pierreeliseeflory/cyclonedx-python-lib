@@ -89,6 +89,6 @@ SCHEMA_VERSIONS = {
     '1.2': SchemaVersion1Dot2,
     '1.3': SchemaVersion1Dot3,
     '1.4': SchemaVersion1Dot4,
-    '1.4-cbom-1.0': SchemaVersion1Dot4CbomVersion1Dot0
-    '1.6': SchemaVersion1Dot6,
+    '1.4-cbom-1.0': SchemaVersion1Dot4CbomVersion1Dot0,
+    '1.6': SchemaVersion1Dot6
 }
